@@ -8,8 +8,9 @@ import falcon.asgi
 import json
 from falcon_limiter import AsyncLimiter
 from falcon_limiter.utils import get_remote_addr
+from dotenv import load_dotenv
 
-
+load_dotenv()  # take environment variables from .env.
 limiter = AsyncLimiter(
     key_func=get_remote_addr,
     default_limits="2 per second"
