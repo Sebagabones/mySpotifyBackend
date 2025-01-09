@@ -11,6 +11,7 @@ from falcon_limiter.utils import get_remote_addr
 from dotenv import load_dotenv
 
 load_dotenv()  # take environment variables from .env.
+
 limiter = AsyncLimiter(
     key_func=get_remote_addr,
     default_limits="2 per second"
@@ -21,8 +22,6 @@ async def cleanJson(responseIn): # Cleans Track Object
         jsonIn = responseIn.json()['item']
         newValues = {}
         newValues.update({"songName":jsonIn['name']})
-
-        # print(jsonIn['artists'][0]['name'])
         newValues.update({"artist":jsonIn['artists'][0]['name']})
         newValues.update({"urlToSong":jsonIn['external_urls']['spotify']})
         newValues.update({"id":jsonIn['id']})
@@ -33,8 +32,6 @@ async def cleanJson(responseIn): # Cleans Track Object
 async def cleanDict(jsonIn): # Cleans Track Object
         newValues = {}
         newValues.update({"songName":jsonIn['name']})
-
-        # print(jsonIn['artists'][0]['name'])
         newValues.update({"artist":jsonIn['artists'][0]['name']})
         newValues.update({"urlToSong":jsonIn['external_urls']['spotify']})
         newValues.update({"id":jsonIn['id']})
@@ -54,7 +51,6 @@ async def getAccessToken(refresh_token, basic, TOKEN_ENDPOINT):
 
     response =  await asyncio.to_thread(requests.post, TOKEN_ENDPOINT, params=data, headers=headers )
     if response.status_code == 200:
-        # print(response.json())
         return(response.json()['access_token'])
     else:
         return("Error")
@@ -157,10 +153,9 @@ class topTracksResource:
             return("Error collecting top tracks")
 
         # Will want to parse each returned track into its own jsonCleanedFile
-
         tasks = [asyncio.create_task(cleanDict(song)) for song in getTopTracks.json()['items']]
 
-        # jsonCleanedTask =  asyncio.create_task(cleanJson(getTopTracksTask.result()))
+
         listOfSongs = []
         songNumber = 0
         for task in asyncio.as_completed(tasks):
@@ -172,56 +167,7 @@ class topTracksResource:
             songNumber += 1
 
         textToRespond = listOfSongs
-        # print(textToRespond)
         resp.text = json.dumps(textToRespond)
-
-
-
-
-# # async def nowPlayingJSON(accessToken, nowPlayingEndpoint):
-#     # headers = {
-#     #     "Authorization": f"Bearer {accessToken}",
-#     #     }
-
-#     # response =  await asyncio.to_thread(requests.get, nowPlayingEndpoint, headers=headers )
-#     # return(response.json())
-
-# async def topTracksJSON(accessToken, topTracksEndpoint):
-#     headers = {
-#         "Authorization": f"Bearer {accessToken}",
-#         }
-
-#     response =  await asyncio.to_thread(requests.get, topTracksEndpoint, headers=headers )
-#     return(response.json())
-
-# async def requestsToSpotifyMain():
-
-#     client_id = os.getenv("SPOTIFY_CLIENT_ID", "")
-#     client_secret = os.getenv("SPOTIFY_CLIENT_SECRET", "")
-#     refresh_token = os.getenv("SPOTIFY_REFRESH_TOKEN","")
-
-#     NOW_PLAYING_ENDPOINT = "https://api.spotify.com/v1/me/player/currently-playing"
-#     TOP_TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/top/tracks"
-#     TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token"
-
-#     # requests.get(f"https://api.github.com/search/commits?q=author:tombl&sort=author-date&order=desc&page={page}").json()
-
-#     basic = base64.b64encode(bytes(f"{client_id}:{client_secret}", 'utf-8')).decode('utf-8')
-
-#     accessTokenTask = asyncio.create_task(getAccessToken(refresh_token, basic, TOKEN_ENDPOINT))
-#     # didntWaitTask = asyncio.create_task(printWaiting())
-#     await accessTokenTask
-#     accessToken = accessTokenTask.result()
-#     # await didntWaitTask
-#     nowPlayingJsonTask = asyncio.create_task(nowPlayingJSON(accessToken, NOW_PLAYING_ENDPOINT))
-#     topTracksJsonTask = asyncio.create_task(topTracksJSON(accessToken, TOP_TRACKS_ENDPOINT))
-
-
-    # print(accessTokenTask)
-
-    # await asyncio.gather(nowPlayingJsonTask, topTracksJsonTask)
-    # print(nowPlayingJsonTask.result())
-    # print(getAccessToken(refresh_token, basic, TOKEN_ENDPOINT))
 
 
 client_id = os.getenv("SPOTIFY_CLIENT_ID", "")
