@@ -1,2 +1,1 @@
-An asynchronous API I wrote for my website - read more about it here: 
-https://mahoosively.gay/posts/spotifyapi/
+An asynchronous API I wrote for my website - read more about it [here](https://mahoosively.gay/posts/spotifyapi/)
