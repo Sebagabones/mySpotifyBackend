@@ -19,15 +19,8 @@ responseCacheTopTracks = {}
 
 async def cleanJson(responseIn):  # Cleans Track Object
 	jsonIn = responseIn.json()["item"]
-	newValues = {}
-	newValues.update({"songName": jsonIn["name"]})
-	newValues.update({"artist": jsonIn["artists"][0]["name"]})
-	newValues.update({"urlToSong": jsonIn["external_urls"]["spotify"]})
-	newValues.update({"id": jsonIn["id"]})
-	newValues.update({"images": jsonIn["album"]["images"]})
-	newValues.update({"progress": int(responseIn.json()["progress_ms"] / 1000)})
-	return newValues
-
+	return(await cleanDict(jsonIn))
+	
 
 async def cleanDict(jsonIn):  # Cleans Track Object
 	newValues = {}
