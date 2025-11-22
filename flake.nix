@@ -5,6 +5,7 @@
 
   outputs = { self, nixpkgs }:
     let
+      system = "x86_64-linux";
       pkgs = import nixpkgs { system = "x86_64-linux"; };
       # Need to build one package from scratch
       falcon-limiter = pkgs.python3Packages.buildPythonPackage rec {
@@ -25,13 +26,10 @@
         doCheck = false;
 
         # specific to buildPythonPackage, see its reference
-        build-system = with pkgs.python3Packages; [
-          hatch-vcs
-          hatchling
-        ];
+        build-system = with pkgs.python3Packages; [ hatch-vcs hatchling ];
       };
     in {
-      devShells.x86_64-linux.default = pkgs.mkShell rec {
+      devShells.${system}.default = pkgs.mkShell rec {
         nativeBuildInputs = with pkgs; [
           uv
           ruff
@@ -59,6 +57,21 @@
         shellHook = ''
           export PYTHONPATH=$(pwd)
         '';
+      };
+      packages.${system}.default = {
+        mySpotifyBackend = pkgs.python3Packages.buildPythonPackage rec {
+          pname = "mySpotifyBackend";
+          version = "0.0.1";
+          pyproject = true;
+
+          src = pkgs.fetchFromGitHub {
+            owner = "Sebagabones";
+            repo = "mySpotifyBackend";
+            rev = "aa4f7cce99d3693f50345bcd6a5d487665ca35d3";
+            hash = "";
+          };
+
+        };
       };
     };
 }

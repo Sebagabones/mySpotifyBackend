@@ -1,7 +1,12 @@
 [project]
 name = "mySpotifyBackend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Sebgabones", email = "133339614+Sebagabones@users.noreply.github.com" }
+]
 requires-python = ">=3.11"
-version = "0.0.1"
 dependencies = [
     "certifi==2024.12.14",
     "charset-normalizer==3.4.1",
@@ -22,4 +27,12 @@ dependencies = [
 ]
 
 [tool.uv]
-package = false
+package = true
+
+[project.scripts]
+mySpotifyBackend = "myspotifybackend:main"
+
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"

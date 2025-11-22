@@ -172,8 +172,8 @@ wheels = [
 
 [[package]]
 name = "myspotifybackend"
-version = "0.0.1"
-source = { virtual = "." }
+version = "0.1.0"
+source = { editable = "." }
 dependencies = [
     { name = "certifi" },
     { name = "charset-normalizer" },
