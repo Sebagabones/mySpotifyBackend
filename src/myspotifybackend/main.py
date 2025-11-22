@@ -7,12 +7,10 @@ import os
 import falcon
 import falcon.asgi
 import requests
-from dotenv import load_dotenv
 from falcon_limiter import AsyncLimiter
 from falcon_limiter.utils import get_remote_addr
 
 
-# load_dotenv()  # take environment variables from .env.
 class Application:
     limiter = AsyncLimiter(key_func=get_remote_addr, default_limits="2 per second")
     responseCacheNowPlaying = {}

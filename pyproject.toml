@@ -18,7 +18,6 @@ dependencies = [
     "idna==3.10",
     "limits==3.14.1",
     "packaging==24.2",
-    "python-dotenv==1.0.1",
     "requests==2.32.3",
     "typing-extensions==4.12.2",
     "urllib3==2.3.0",
