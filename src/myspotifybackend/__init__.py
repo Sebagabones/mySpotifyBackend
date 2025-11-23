@@ -11,5 +11,5 @@ def main() -> None:
         "myspotifybackend.main:app",
         host="0.0.0.0",
         port=int(os.getenv("PORT", "")),
-        reload=True,
+        # reload=True,
     )
