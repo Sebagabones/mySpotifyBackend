@@ -11,9 +11,9 @@ import uvicorn
 from falcon_limiter import AsyncLimiter
 from falcon_limiter.utils import get_remote_addr
 
-limiter = AsyncLimiter(key_func=get_remote_addr, default_limits="2 per second")
 responseCacheNowPlaying = {}
 responseCacheTopTracks = {}
+limiter = AsyncLimiter(key_func=get_remote_addr, default_limits="4 per second")
 
 
 async def cleanDict(jsonIn):  # Cleans Track Object
